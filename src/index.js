@@ -3,12 +3,15 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
 import App from "./App";
-import Home from "./components/Home";
+import Home from "./components/Home/";
 import Setup from "./components/Setup/";
 import Devices from "./components/Devices";
 import Animations from "./components/Animations";
+import AnimationEditor from "./components/Animations/AnimationEditor";
+import DragExample from "./components/DragExample";
 import { AppProvider } from "./contexts/AppContext";
 import reportWebVitals from "./reportWebVitals";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -16,10 +19,12 @@ ReactDOM.render(
       <AppProvider>
         <Routes>
           <Route path="/" element={<App />} />
-          <Route path="home" element={<Home />} />
-          <Route path="setup" element={<Setup />} />
-          <Route path="devices" element={<Devices />} />
-          <Route path="animations" element={<Animations />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/setup" element={<Setup />} />
+          <Route path="/devices" element={<Devices />} />
+          <Route path="/animations" element={<Animations />} />
+          <Route path="/animations/editor" element={<AnimationEditor />} />
+          <Route path="/dragdropexample" element={<DragExample />} />
         </Routes>
       </AppProvider>
     </BrowserRouter>

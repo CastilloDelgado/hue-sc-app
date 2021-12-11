@@ -3,7 +3,7 @@ import React, { createContext, useState, useMemo, useContext } from "react";
 const AppContext = createContext();
 
 export function AppProvider(props) {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [networkInfo, setNetworkInfo] = useState({
     id: "",
     ip: "",

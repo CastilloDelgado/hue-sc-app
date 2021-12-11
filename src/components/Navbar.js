@@ -72,6 +72,17 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="nav-item">
+              <Link
+                to="/dragdropexample"
+                className={`nav-link ${
+                  pathname.includes("dragdropexample") && "active"
+                }`}
+                aria-current="page"
+              >
+                Drag & Drop Example
+              </Link>
+            </li>
+            <li className="nav-item">
               <div className="form-check form-switch d-flex d-lg-none">
                 <input
                   className="form-check-input"

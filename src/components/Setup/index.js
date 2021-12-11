@@ -19,17 +19,22 @@ const Setup = () => {
       })
       .catch((error) => console.log(error));
 
+  const getNetworkInfoFromBrowser = () =>
+    JSON.parse(localStorage.getItem("networkInfo"));
+
   const generateClientKey = (ip) =>
     HueService.generateClientKey(ip)
       .then(({ data }) => {
         const result = data.pop();
         if (result.success) {
           const { username, clientkey } = result.success;
-          setNetworkInfo({
+          const newNetworkInfo = {
             ...networkInfo,
             user: username,
             key: clientkey,
-          });
+          };
+          setNetworkInfo(newNetworkInfo);
+          localStorage.setItem("networkInfo", JSON.stringify(newNetworkInfo));
           setButtonNotPressed(false);
         }
         if (result.error) {
@@ -42,7 +47,8 @@ const Setup = () => {
       });
 
   useEffect(() => {
-    getNetworkInfo();
+    const storedNetworkInfo = getNetworkInfoFromBrowser();
+    storedNetworkInfo ? setNetworkInfo(storedNetworkInfo) : getNetworkInfo();
   }, []);
 
   return (

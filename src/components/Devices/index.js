@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../Navbar";
-import Light from "./Light";
+import LightEditor from "./LightEditor";
 import { useApp } from "../../contexts/AppContext";
 import { Link } from "react-router-dom";
 import HueService from "../../services/Hue";
@@ -19,8 +19,9 @@ const Devices = () => {
         .then(({ data }) => {
           const result = Object.entries(data);
           setLights(
-            result.map((light) => ({
+            result.map((light, index) => ({
               id: light[0],
+              index: index,
               ...light[1],
             }))
           );
@@ -33,11 +34,16 @@ const Devices = () => {
     <>
       <Navbar />
       <div
-        className={`container-fluid mt-3 ${darkMode && "bg-dark text-white"}`}
+        className={`container-fluid pt-3 ${darkMode && "bg-dark text-white"}`}
         style={{ minHeight: "95vh" }}
       >
-        <div className="row justify-content-center">
+        <div className="row justify-content-center mb-2">
           <div className="col col-lg-6">
+            <h1 className="text-center">Lights</h1>
+          </div>
+        </div>
+        <div className="row justify-content-center">
+          <div className="col col-lg-8">
             {missingNetworkInfo(networkInfo) ? (
               <>
                 <p className="text-danger text-center">
@@ -51,9 +57,13 @@ const Devices = () => {
               <>
                 <div className="container-fluid p-0">
                   <div className="row">
-                    {lights.map((light) => (
-                      <div className="col-12 col-md-6">
-                        <Light light={light} />
+                    {lights.map((light, index) => (
+                      <div className="col-12 col-md-6" key={index}>
+                        <LightEditor
+                          light={light}
+                          lights={lights}
+                          setLights={setLights}
+                        />
                       </div>
                     ))}
                   </div>
