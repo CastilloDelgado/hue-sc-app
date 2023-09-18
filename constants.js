@@ -1,0 +1,1 @@
+export const HUE_DISCOVER_URL = "https://discovery.meethue.com/"
