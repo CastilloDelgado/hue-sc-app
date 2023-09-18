@@ -42,7 +42,7 @@ onMounted(() => {
         <p class="text-2xl font-bold text-neutral-800 mb-4">Lights Settings</p>
         <div class="mb-2 flex">
             <AppButton title="Get lights" :action="fetchLights"  />
-            <AppLoader class="text-red-500 ml-2" v-if="!loading"/>
+            <AppLoader class="text-red-500 ml-2" v-if="loading"/>
         </div>
         <div class="flex overflow-auto">
             <div v-for="light in lights" :key="light.id">

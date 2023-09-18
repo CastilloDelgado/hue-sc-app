@@ -13,7 +13,7 @@ defineProps({
             <b>ID: </b> <p>{{ light.id }}</p>
         </div>
         <div class="flex">
-            <b>Product: </b> <p>{{ light.name }}</p>
+            <b>Name: </b> <p>{{ light.name }}</p>
         </div>
     </div>
 </template>
