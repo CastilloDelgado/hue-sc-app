@@ -5,7 +5,8 @@ export const useBridgeStore = defineStore("BridgeStore", {
     state: () => ({
         id: '',
         ip: '',
-        username: ''
+        username: '',
+        lights: []
     }),
     
     actions: {
@@ -17,6 +18,10 @@ export const useBridgeStore = defineStore("BridgeStore", {
 
         setUsername(username){
             this.username = username
+        },
+
+        setLights(lights){
+            this.lights = [...lights]
         }
     },
 
