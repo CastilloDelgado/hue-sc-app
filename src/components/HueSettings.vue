@@ -65,8 +65,8 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="mt-2">
-        <p class="text-2xl font-bold text-neutral-600 mb-4">Brige Settings</p>
+    <div class="mt-2 mb-4">
+        <p class="text-2xl font-bold text-neutral-800 mb-4">Brige Settings</p>
         <p class="text-sm text-red-500" v-if="errorMessage !== ''">*{{ errorMessage || "Unknown error" }}</p>
         <div class="flex mb-1">
             <p class="mr-2">ID:</p>
