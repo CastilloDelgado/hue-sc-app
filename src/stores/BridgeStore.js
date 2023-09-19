@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 
-
 export const useBridgeStore = defineStore("BridgeStore", {
     state: () => ({
         id: '',
