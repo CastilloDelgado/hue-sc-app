@@ -1,19 +1,19 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { HueServices } from "../services/HueServices"
 import { useBridgeStore } from "../stores/BridgeStore"
 import { storeToRefs } from 'pinia';
 import LightInfo from './LightInfo.vue'
 import AppButton from './AppButton.vue';
 import AppLoader from './AppLoader.vue';
+import { getLights } from '../composables/HueServices';
 
 const bridgeStore = useBridgeStore()
-const { lights } = storeToRefs(bridgeStore)
+const { id, ip, username, lights } = storeToRefs(bridgeStore)
 const loading = ref(false)
 
 const fetchLights = () => {
     loading.value = true
-    HueServices.getLights()
+    getLights()
         .then((response) => {
             const lightsData = Object.entries(response.data).map(([key, lightData]) => ({
                 id: parseInt(key),
@@ -32,7 +32,9 @@ const fetchLights = () => {
 
 
 onMounted(() => {   
-    fetchLights()
+    if(id && ip && username){
+        fetchLights()
+    }
 })
 
 </script>
@@ -41,7 +43,7 @@ onMounted(() => {
     <div class="mt-2">
         <p class="text-2xl font-bold text-neutral-800 mb-4">Lights Settings</p>
         <div class="mb-2 flex">
-            <AppButton title="Get lights" :action="fetchLights"  />
+            <AppButton title="Get Lights" :action="fetchLights"  />
             <AppLoader class="text-red-500 ml-2" v-if="loading"/>
         </div>
         <div class="flex overflow-auto">
