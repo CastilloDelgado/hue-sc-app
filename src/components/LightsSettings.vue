@@ -40,7 +40,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="mt-2">
+    <div class="mt-2 mb-6">
         <p class="text-2xl font-bold text-neutral-800 mb-4">Lights Settings</p>
         <div class="mb-2 flex">
             <AppButton title="Get Lights" :action="fetchLights"  />
