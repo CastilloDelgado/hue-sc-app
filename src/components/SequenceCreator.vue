@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import AppButton from './AppButton.vue';
 import CreateSequenceForm from './CreateSequenceForm.vue';
 
-const isCreateFormModalOpen = ref(false)
+const isCreateFormModalOpen = ref(true)
 
 function closeModal() {
     isCreateFormModalOpen.value = false

@@ -7,6 +7,17 @@ import {
   DialogTitle,
 } from '@headlessui/vue'
 import AppButton from './AppButton.vue';
+import AppInput from './AppInput.vue';
+import { ref } from 'vue';
+import { useBridgeStore } from '../stores/BridgeStore';
+import { storeToRefs } from 'pinia';
+
+const bridgeStore = useBridgeStore()
+const { lights } = storeToRefs(bridgeStore)
+
+const name = ref('')
+const bpm = ref('')
+const lightsSelected = ref([])
 
 defineProps({
     isOpen: {
@@ -53,23 +64,30 @@ defineProps({
               leave-to="opacity-0 scale-95"
             >
               <DialogPanel
-                class="w-full max-w-md transform overflow-hidden border-4 border-black bg-white p-6 text-left align-middle shadow-xl transition-all"
+                class="w-full max-w-md transform overflow-hidden border-2 border-black bg-white p-6 text-left align-middle shadow-xl transition-all"
               >
                 <DialogTitle
                   as="h3"
-                  class="text-lg font-medium leading-6 text-gray-900"
+                  class="text-xl mb-6 font-bold leading-6 text-gray-900"
                 >
-                  Payment successful
+                    Create Sequence
                 </DialogTitle>
-                <div class="mt-2">
-                  <p class="text-sm text-gray-500">
-                    Your payment has been successfully submitted. We’ve sent you
-                    an email with all of the details of your order.
-                  </p>
+                <div class="mb-6">
+                    <AppInput title="Name" v-model="name"/>
+                    <AppInput title="BPM" v-model="bpm"/>
+                    <p class="text-xs">*Press and hold command while selecting for multiple selection</p>
+                    <div class="flex">
+                        <div class="w-1/3">
+                            <b>Select Lights: </b>
+                        </div>
+                        <select multiple class="w-2/3 flex border-[1px] border-black" v-model="lightsSelected">
+                            <option class="w-full" v-for="light in lights" :key="light.id" >{{ light.id }}</option>
+                        </select>
+                    </div>
                 </div>
   
-                <div class="mt-4">
-                  <AppButton title="Create Sequence" class="mr-1" :action="closeModal" />
+                <div class="mt-4 w-full flex justify-between">
+                  <AppButton title="Create" class="mr-1" :action="closeModal" />
                   <AppButton title="Close" :action="closeModal" class="bg-red-500 border-red-500 text-white active:bg-red-500 active:border-red-500 active:text-red-500" />
                 </div>
               </DialogPanel>

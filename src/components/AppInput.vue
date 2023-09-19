@@ -15,10 +15,10 @@ defineEmits(['update:modelValue'])
 </script>
 
 <template>
-    <div class="flex">
+    <div class="flex mb-1">
         <b class="mr-2">{{ title }}:</b>
         <input
-            class="border-b-[1px] border-neutral-800"
+            class="border-[1px] border-neutral-800"
             :value="modelValue"
             @input="$emit('update:modelValue', $event.target.value)"
         />
