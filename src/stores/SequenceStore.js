@@ -6,7 +6,9 @@ export const useSequenceStore = defineStore("SequenceStore", {
     }),
 
     actions: {
-
+        addSequence(){
+            
+        }
     },
 
     getters: {

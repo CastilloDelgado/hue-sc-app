@@ -42,13 +42,15 @@ onMounted(() => {
 <template>
     <div class="mt-2 mb-6">
         <p class="text-2xl font-bold text-neutral-800 mb-4">Lights Settings</p>
-        <div class="mb-2 flex">
-            <AppButton title="Get Lights" :action="fetchLights"  />
-            <AppLoader class="text-red-500 ml-2" v-if="loading"/>
-        </div>
-        <div class="flex overflow-auto">
-            <div v-for="light in lights" :key="light.id">
-                <LightInfo :light="light" />
+        <div class="pl-4 border-l-2 border-black">
+            <div class="mb-2 flex">
+                <AppButton title="Get Lights" :action="fetchLights"  />
+                <AppLoader class="text-red-500 ml-2" v-if="loading"/>
+            </div>
+            <div class="flex overflow-auto">
+                <div v-for="light in lights" :key="light.id">
+                    <LightInfo :light="light" />
+                </div>
             </div>
         </div>
     </div>
