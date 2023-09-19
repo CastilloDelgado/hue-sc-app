@@ -4,10 +4,10 @@ import { useBridgeStore } from "../stores/BridgeStore"
 import { storeToRefs } from "pinia";
 import { createUsername, fetchBridgeSettings } from '../composables/HueServices'
 import AppButton from "./AppButton.vue"
-import AppLoader from "./AppLoader.vue";
+import AppInput from "./AppInput.vue";
+
 
 const bridgeStore = useBridgeStore()
-
 const { id, ip, username } = storeToRefs(bridgeStore)
 const loadingIdAndIp = ref(false)
 const loadingUsername = ref(false)
@@ -81,21 +81,9 @@ onMounted(() => {
         <p class="text-2xl font-bold text-neutral-800 mb-4">Brige Settings</p>
         <div class="pl-4 border-l-2 border-black">
             <p class="text-sm text-red-500" v-if="errorMessage !== ''">*{{ errorMessage || "Unknown error" }}</p>
-            <div class="flex mb-1">
-                <p class="mr-2">ID:</p>
-                <input class="border-b-[1px] border-neutral-800"  type="text" v-model="id">
-                <AppLoader v-if="loadingIdAndIp" />
-            </div>
-            <div class="flex mb-1">
-                <p class="mr-2">IP:</p>
-                <input class="border-b-[1px] border-neutral-800" type="text" v-model="ip">
-                <AppLoader v-if="loadingIdAndIp" />
-            </div>
-            <div class="flex mb-3">
-                <p class="mr-2">USERNAME:</p>
-                <input class="border-b-[1px] border-neutral-800" disabled type="text" v-model="username">
-                <AppLoader v-if="loadingUsername" />
-            </div>
+            <AppInput v-model="id" title="ID" :loading="loadingIdAndIp"/>
+            <AppInput v-model="ip" title="IP" :loading="loadingIdAndIp"/>
+            <AppInput v-model="username" title="USERNAME" :loading="loadingUsername"/>
             <div class="flex">
                 <AppButton title="Create Username" class="mr-1" :disabled="id === '' || ip === '' || username !== ''" :action="fetchUsername"/>
                 <AppButton title="Save Data" />

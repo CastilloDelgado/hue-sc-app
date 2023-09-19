@@ -1,16 +1,7 @@
 <script setup>
 import AppLoader from './AppLoader.vue';
 
-defineProps({
-    title: {
-        type: String,
-        required: true
-    },
-    loading: {
-        type: Boolean,
-        default: false
-    }
-},['modelValue'])
+defineProps(['modelValue', 'loading', 'title'])
 defineEmits(['update:modelValue'])
 </script>
 
@@ -18,7 +9,7 @@ defineEmits(['update:modelValue'])
     <div class="flex mb-1">
         <b class="mr-2">{{ title }}:</b>
         <input
-            class="border-[1px] border-neutral-800"
+            class="border-[1px] border-neutral-800 px-1"
             :value="modelValue"
             @input="$emit('update:modelValue', $event.target.value)"
         />

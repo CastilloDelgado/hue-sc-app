@@ -25,6 +25,8 @@ export const useBridgeStore = defineStore("BridgeStore", {
     },
 
     getters: {
-
+        getId: (state) => state.id,
+        getIp: (state) => state.ip,
+        getUsername: (state) => state.username,
     }
 })
