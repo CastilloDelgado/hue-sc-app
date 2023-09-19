@@ -21,9 +21,9 @@ const steps = ref([1,2,3,4,5])
                 </form>
             </div>
             <div>
-                <p class="text-xl font-bold text-neutral-500">Steps</p>
+                <p class="text-xl font-bold text-neutral-500 mb-2">Steps</p>
                 <div v-for="step in steps" :key="step" class="flex">
-                    <LightStep v-for="lightStep in [1,2,3,4,5]" :key="lightStep" class="bg-black">
+                    <LightStep v-for="lightStep in [1,2,3,4,5]" :key="lightStep" class="">
 
                     </LightStep>
                 </div>
