@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 export const useSequenceStore = defineStore("SequenceStore", {
     state: () => ({
-        sequences: [],
+        sequences: [{"id":"wnvqomddf5","name":"First Sequence","bpm":500,"lights":["9"],"steps":[]}],
         sequenceSelected: {},
         stepSelected: {}
     }),
@@ -41,4 +41,8 @@ export const useSequenceStore = defineStore("SequenceStore", {
             }
         }
     },
+
+    getters: {
+        getSequenceStepsByIndex: (state) => (sequenceIndex) => state.sequences[sequenceIndex].steps
+    }
 })

@@ -20,7 +20,7 @@ const animation = () => {
         } else {
             i++
         }
-        if(i < 100000){
+        if(i < 4){
             animation()
         }
     }, props.interval)

@@ -3,12 +3,12 @@ import LightStep from './LightStep.vue';
 import { useSequenceStore } from '../stores/SequenceStore'
 import AppButton from './AppButton.vue';
 import AppLoader from './AppLoader.vue';
+import LightStateForm from "./LightStateForm.vue"
 import { ref } from 'vue';
-import LightStateForm from './LightStateForm.vue';
 
 const sequenceStore = useSequenceStore()
 
-defineProps({
+const props = defineProps({
     sequence: {
         type: Object,
         required: true
@@ -27,7 +27,30 @@ const openLightStateModal = (sequenceIndex, stepIndex, lightIndex) => {
 }
 
 const playing = ref(false)
-const togglePlaying = () => playing.value = !playing.value
+const activeStep = ref(0)
+
+const steps = ref(sequenceStore.sequences[props.sequenceIndex].steps)
+
+const loop = () => {
+    setTimeout(() => {
+        activeStep.value = activeStep.value + 1
+        if(activeStep.value === steps.value.length){
+            activeStep.value = 0
+        }
+        if(activeStep.value < steps.value.length && playing.value){
+            loop()
+        }
+    }, props.sequence.bpm)
+}
+
+const togglePlaying = () => {
+    playing.value = !playing.value
+    if(playing.value === true){
+        activeStep.value = 0
+        loop()
+    }
+}
+
 
 </script>
 
@@ -59,10 +82,10 @@ const togglePlaying = () => playing.value = !playing.value
                 <div v-for="(step, stepIndex) in sequence.steps" :key="step" class="flex flex-row">
                     <div v-if="stepIndex === 0">
                         <p class="h-3 mb-1 mr-1"></p>
-                        <p class="h-6 mb-1 mr-1 text-right font-bold" v-for="light in sequence.lights" :key="light">{{ light  }}</p>
+                        <p class="h-6 mb-1 mr-1 text-right font-bold" v-for="light in sequence.lights" :key="light">{{ light }}</p>
                     </div>
                     <div class="flex flex-col">
-                        <p class="text-xs text-right pr-1">{{ stepIndex + 1 }}</p>
+                        <p class="text-xs text-center hover:bg-black hover:text-white mr-1" :class="`${activeStep === stepIndex && playing ? 'bg-green-600 text-white' : ''}`">{{ stepIndex + 1 }}</p>
                         <LightStep v-for="(lightStep, lightIndex) in step" :key="lightStep" class="" @click="openLightStateModal(sequenceIndex, stepIndex, lightIndex)">
                             
                         </LightStep>
