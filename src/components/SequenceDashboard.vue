@@ -55,13 +55,14 @@ const togglePlaying = () => {
 </script>
 
 <template>
-    <div>
+    <div class="mb-4">
         <div class="mb-3">
+            <div class="flex mb-2 items-end">
+                <b class="mr-2 text-3xl font-bold text-blue-600">{{ sequence.name }}</b>
+                <b>BPM: </b>
+                <p>{{ sequence.bpm }}</p>
+            </div>
             <p class="text-xl font-bold text-neutral-500">Settings</p>
-            <form class="flex mb-2">
-                <b class="mr-2">{{ sequence.name }}</b>
-                <p>BPM: {{ sequence.bpm }}</p>
-            </form>
             <div>
                 <p>Actions</p>
                 <div class="flex">

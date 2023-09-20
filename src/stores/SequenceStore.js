@@ -1,8 +1,9 @@
 import { defineStore } from "pinia";
+import { DEFAULT_SEQUENCE } from "../../constants";
 
 export const useSequenceStore = defineStore("SequenceStore", {
     state: () => ({
-        sequences: [{"id":"wnvqomddf5","name":"First Sequence","bpm":500,"lights":["9"],"steps":[]}],
+        sequences: [DEFAULT_SEQUENCE],
         sequenceSelected: {},
         stepSelected: {}
     }),
