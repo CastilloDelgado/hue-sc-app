@@ -4,6 +4,7 @@ import { useSequenceStore } from '../stores/SequenceStore'
 import AppButton from './AppButton.vue';
 import AppLoader from './AppLoader.vue';
 import { ref } from 'vue';
+import LightStateForm from './LightStateForm.vue';
 
 const sequenceStore = useSequenceStore()
 
@@ -11,11 +12,21 @@ defineProps({
     sequence: {
         type: Object,
         required: true
+    },
+    sequenceIndex: {
+        type: Number,
+        required: true
     }
 })
 
-const playing = ref(false)
+const isLightStateModalOpen = ref(false)
+const closeLightStateModal = () => isLightStateModalOpen.value = false
+const openLightStateModal = (sequenceIndex, stepIndex, lightIndex) => {
+    sequenceStore.selectStep(sequenceIndex, stepIndex, lightIndex)
+    isLightStateModalOpen.value = true
+}
 
+const playing = ref(false)
 const togglePlaying = () => playing.value = !playing.value
 
 </script>
@@ -52,7 +63,7 @@ const togglePlaying = () => playing.value = !playing.value
                     </div>
                     <div class="flex flex-col">
                         <p class="text-xs text-right pr-1">{{ stepIndex + 1 }}</p>
-                        <LightStep v-for="lightStep in step" :key="lightStep" class="">
+                        <LightStep v-for="(lightStep, lightIndex) in step" :key="lightStep" class="" @click="openLightStateModal(sequenceIndex, stepIndex, lightIndex)">
                             
                         </LightStep>
                     </div>
@@ -60,4 +71,5 @@ const togglePlaying = () => playing.value = !playing.value
             </div>
         </div>
     </div>
+    <LightStateForm :is-open="isLightStateModalOpen" :open-modal="openLightStateModal" :close-modal="closeLightStateModal" />
 </template>

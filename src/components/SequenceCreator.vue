@@ -10,13 +10,8 @@ const sequenceStore = useSequenceStore()
 const { sequences } = storeToRefs(sequenceStore)
 
 const isCreateFormModalOpen = ref(false)
-
-function closeModal() {
-    isCreateFormModalOpen.value = false
-}
-function openModal() {
-    isCreateFormModalOpen.value = true
-}
+const closeCreateFormModal = () => isCreateFormModalOpen.value = false
+const openCreateFormModal = () => isCreateFormModalOpen.value = true
 
 </script>
 
@@ -24,11 +19,11 @@ function openModal() {
     <div class="mt-2">
         <div class="flex items-end mb-4">
             <p class="text-2xl font-bold text-neutral-800 mr-2">Sequences</p>
-            <AppButton title="Create Sequence" :action="openModal"/>
+            <AppButton title="Create Sequence" :action="openCreateFormModal"/>
         </div>
         <div class="pl-4 border-l-2 border-black">
-            <SequenceDashboard v-for="sequence in sequences" :key="sequence.key" :sequence="sequence"/>
+            <SequenceDashboard v-for="(sequence, sequenceIndex) in sequences" :key="sequence.key" :sequence="sequence" :sequence-index="sequenceIndex"/>
         </div>
-        <CreateSequenceForm :is-open="isCreateFormModalOpen" :open-modal="openModal" :close-modal="closeModal" />
+        <CreateSequenceForm :is-open="isCreateFormModalOpen" :open-modal="openCreateFormModal" :close-modal="closeCreateFormModal" />
     </div>
 </template>

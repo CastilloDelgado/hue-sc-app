@@ -3,13 +3,13 @@ import { defineStore } from "pinia";
 export const useSequenceStore = defineStore("SequenceStore", {
     state: () => ({
         sequences: [],
-        sequenceSelected: {}
+        sequenceSelected: {},
+        stepSelected: {}
     }),
 
     actions: {
         addSequence(name, bpm, lights){
             const randomId = (Math.random() + 1).toString(36).substring(2)
-
             const newSequence = {
                 id: randomId,
                 name,
@@ -26,10 +26,19 @@ export const useSequenceStore = defineStore("SequenceStore", {
             this.sequences[index].steps.push(this.sequences[index].lights.map((light) => ({
                 light
             })))
+        },
+
+        selectStep(sequenceIndex, stepIndex, lightIndex){
+            this.stepSelected = { sequenceIndex, stepIndex, lightIndex}
+        },
+
+        updateStepState(newState){
+            const { sequenceIndex, stepIndex, lightIndex } = this.stepSelected
+            const currentState = this.sequences[sequenceIndex].steps[stepIndex][lightIndex]
+            this.sequences[sequenceIndex].steps[stepIndex][lightIndex] = {
+                ...currentState,
+                ...newState
+            }
         }
     },
-
-    getters: {
-
-    }
 })
