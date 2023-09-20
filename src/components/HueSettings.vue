@@ -71,9 +71,7 @@ onMounted(() => {
     } else{
         fetchSettings()
     }   
-
 })
-
 </script>
 
 <template>

@@ -11,15 +11,17 @@ import AppInput from './AppInput.vue';
 import { ref } from 'vue';
 import { useBridgeStore } from '../stores/BridgeStore';
 import { storeToRefs } from 'pinia';
+import { useSequenceStore } from '../stores/SequenceStore';
 
 const bridgeStore = useBridgeStore()
+const sequenceStore = useSequenceStore()
 const { lights } = storeToRefs(bridgeStore)
 
 const name = ref('')
-const bpm = ref('')
+const bpm = ref(0)
 const lightsSelected = ref([])
 
-defineProps({
+const props = defineProps({
     isOpen: {
         type: Boolean,
         required: true
@@ -33,6 +35,12 @@ defineProps({
         required: true
     }
 })
+
+const createSequence = () => {
+  sequenceStore.addSequence(name.value, bpm.value, lightsSelected.value)
+  props.closeModal()
+}
+
 </script>
 
 <template>
@@ -87,7 +95,7 @@ defineProps({
                 </div>
   
                 <div class="mt-4 w-full flex justify-between">
-                  <AppButton title="Create" class="mr-1" :action="closeModal" />
+                  <AppButton title="Create" class="mr-1" :action="createSequence" :disabled="name === '' || bpm === 0 || lightsSelected.length === 0" />
                   <AppButton title="Close" :action="closeModal" class="bg-red-500 border-red-500 text-white active:bg-red-500 active:border-red-500 active:text-red-500" />
                 </div>
               </DialogPanel>

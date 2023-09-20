@@ -2,6 +2,12 @@
 import { ref } from 'vue';
 import AppButton from './AppButton.vue';
 import CreateSequenceForm from './CreateSequenceForm.vue';
+import SequenceDashboard from './SequenceDashboard.vue';
+import { useSequenceStore } from '../stores/SequenceStore';
+import { storeToRefs } from 'pinia';
+
+const sequenceStore = useSequenceStore()
+const { sequences } = storeToRefs(sequenceStore)
 
 const isCreateFormModalOpen = ref(false)
 
@@ -21,7 +27,8 @@ function openModal() {
             <AppButton title="Create Sequence" :action="openModal"/>
         </div>
         <div class="pl-4 border-l-2 border-black">
-            <CreateSequenceForm :is-open="isCreateFormModalOpen" :open-modal="openModal" :close-modal="closeModal" />
+            <SequenceDashboard v-for="sequence in sequences" :key="sequence.key" :sequence="sequence"/>
         </div>
+        <CreateSequenceForm :is-open="isCreateFormModalOpen" :open-modal="openModal" :close-modal="closeModal" />
     </div>
 </template>
