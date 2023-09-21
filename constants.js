@@ -10,31 +10,16 @@ export const DEFAULT_SEQUENCE = {
     "id":"wnvqomddf5",
     "name":"First Sequence",
     "bpm":500,
-    "lights":["9"],
+    "lights":[9,10],
     "steps":[
         [
-            {
-                light: "9",
-                on: true,
-            }
+            "{on: true,bri: 220,transitiontime: 0}",
+            "{on: false,transitiontime: 0}",
+            
         ],
         [
-            {
-                light: "9",
-                on: false,
-            }
-        ],
-        [
-            {
-                light: "9",
-                on: true,
-            }
-        ],
-        [
-            {
-                light: "9",
-                on: false,
-            }
+            "{on: false,bri: 220,transitiontime: 0}",
+            "{on: true,transitiontime: 0}",
         ],
     ]
 }

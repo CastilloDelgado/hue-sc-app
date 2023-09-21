@@ -44,6 +44,7 @@ export const useSequenceStore = defineStore("SequenceStore", {
     },
 
     getters: {
-        getSequenceStepsByIndex: (state) => (sequenceIndex) => state.sequences[sequenceIndex].steps
+        getSequenceStepsByIndex: (state) => (sequenceIndex) => state.sequences[sequenceIndex].steps,
+        getState: (state) => () => state.sequences[state.stepSelected.sequenceIndex].steps[state.stepSelected.stepIndex][state.stepSelected.lightIndex]
     }
 })

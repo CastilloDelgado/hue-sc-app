@@ -18,3 +18,4 @@ const createApiUrlWithUsername = () => {
 export const fetchBridgeSettings = async () => axios.get(HUE_DISCOVER_URL)
 export const createUsername = async () => axios.post(`${createApiUrl()}/api`, {"devicetype":"hue-sc-app#marcos_macbook_pro"})
 export const getLights = async () => axios.get(`${createApiUrlWithUsername()}/lights`)
+export const setLightState = async (lightId, state) => axios.put(`${createApiUrlWithUsername()}/lights/${lightId}/state`, state)

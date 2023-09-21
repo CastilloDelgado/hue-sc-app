@@ -5,6 +5,7 @@ import AppButton from './AppButton.vue';
 import AppLoader from './AppLoader.vue';
 import LightStateForm from "./LightStateForm.vue"
 import { ref } from 'vue';
+import { setLightState } from "../composables/HueServices"
 
 const sequenceStore = useSequenceStore()
 
@@ -33,6 +34,13 @@ const steps = ref(sequenceStore.sequences[props.sequenceIndex].steps)
 
 const loop = () => {
     setTimeout(() => {
+        // Update lights state
+        steps.value[activeStep.value].forEach((lightState) => {
+            const newState = {...lightState}
+            delete newState.light
+            setLightState(lightState.light, {...newState})
+        })
+
         activeStep.value = activeStep.value + 1
         if(activeStep.value === steps.value.length){
             activeStep.value = 0
@@ -50,8 +58,6 @@ const togglePlaying = () => {
         loop()
     }
 }
-
-
 </script>
 
 <template>

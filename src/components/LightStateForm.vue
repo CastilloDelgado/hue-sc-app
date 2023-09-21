@@ -7,17 +7,14 @@ import {
   DialogTitle,
 } from '@headlessui/vue'
 import AppButton from './AppButton.vue';
-import AppInput from './AppInput.vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useSequenceStore } from '../stores/SequenceStore';
 import { storeToRefs } from 'pinia';
 
 const sequenceStore = useSequenceStore()
 const { stepSelected } = storeToRefs(sequenceStore)
 
-const on = ref('')
-const bri = ref('')
-const color = ref('')
+const state = ref('')
 
 defineProps({
     isOpen: {
@@ -35,14 +32,16 @@ defineProps({
 })
 
 const saveState = () => {
-    sequenceStore.updateStepState({
-        on: on.value,
-        bri: bri.value,
-        color: color.value
-    })
+    // sequenceStore.updateStepState({
+    //     on: on.value,
+    //     bri: bri.value,
+    //     color: color.value
+    // })
 }
 
-
+watch(stepSelected, () => {
+  state.value = sequenceStore.getState()
+})
 
 </script>
 
@@ -84,13 +83,15 @@ const saveState = () => {
                   Light State
                 </DialogTitle>
                 <div class="flex mb-6">
-                  <b>Light ID:</b> <p class="mr-4">{{ sequenceStore.getState.light }}</p>
-                  <b>Step:</b> <p>{{ stepSelected.stepIndex + 1 }}</p>
+                  <!-- <b>Light ID:</b> <p class="mr-4">{{ sequenceStore.getState.light }}</p> -->
+                  <!-- <b>Step:</b> <p>{{ stepSelected.stepIndex + 1 }}</p> -->
                 </div>
-                <div class="mb-6">
-                    <AppInput title="On" v-model="on"/>
+                <div class="mb-6 flex">
+                    <!-- <AppInput title="On" v-model="on"/>
                     <AppInput title="Bri" v-model="bri"/>
-                    <AppInput title="Color" v-model="color"/>
+                    <AppInput title="Color" v-model="color"/> -->
+                    <p class="mr-2">Light State:</p>
+                    <textarea v-model="state" class="border-[1px] border-black" />
                 </div>
   
                 <div class="mt-4 w-full flex justify-between">
