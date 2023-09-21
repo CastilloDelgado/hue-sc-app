@@ -13,13 +13,12 @@ export const DEFAULT_SEQUENCE = {
     "lights":[9,10],
     "steps":[
         [
-            "{on: true,bri: 220,transitiontime: 0}",
-            "{on: false,transitiontime: 0}",
-            
+            '{"on":true,"bri":220,"transitiontime":0}',
+            '{"on":false,"transitiontime":0}',
         ],
         [
-            "{on: false,bri: 220,transitiontime: 0}",
-            "{on: true,transitiontime: 0}",
+            '{"on":false,"transitiontime":0}',
+            '{"on":true,"bri":220,"transitiontime":0}',
         ],
     ]
 }
