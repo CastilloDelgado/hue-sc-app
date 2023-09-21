@@ -10,11 +10,13 @@ import AppButton from './AppButton.vue';
 import { ref, watch } from 'vue';
 import { useSequenceStore } from '../stores/SequenceStore';
 import { storeToRefs } from 'pinia';
+import { hexToXy } from "../helpers"
 
 const sequenceStore = useSequenceStore()
 const { stepSelected } = storeToRefs(sequenceStore)
 
 const state = ref('')
+const color = ref('')
 
 const props = defineProps({
     isOpen: {
@@ -38,6 +40,12 @@ const saveState = (newState) => {
 
 watch(stepSelected, () => {
   state.value = sequenceStore.getState()
+})
+
+watch(color, () => {
+  const stateObject = JSON.parse(state.value)
+  stateObject.xy = hexToXy(color.value)
+  state.value = JSON.stringify(stateObject)
 })
 
 </script>
@@ -75,22 +83,21 @@ watch(stepSelected, () => {
               >
                 <DialogTitle
                   as="h3"
-                  class="text-xl font-bold leading-6 text-gray-900"
+                  class="text-xl font-bold leading-6 text-gray-900 mb-6"
                 >
                   Light State
                 </DialogTitle>
-                <div class="flex mb-6">
-                  <!-- <b>Light ID:</b> <p class="mr-4">{{ sequenceStore.getState.light }}</p> -->
-                  <!-- <b>Step:</b> <p>{{ stepSelected.stepIndex + 1 }}</p> -->
-                </div>
-                <div class="mb-6 flex">
-                    <!-- <AppInput title="On" v-model="on"/>
-                    <AppInput title="Bri" v-model="bri"/>
-                    <AppInput title="Color" v-model="color"/> -->
-                    <p class="mr-2">Light State:</p>
-                    <textarea v-model="state" class="border-[1px] border-black" />
-                </div>
-  
+                <div class="mb-6">
+                    <!-- Color Picker -->
+                    <div class="flex mb-1">
+                      <b class="mr-2" >Color: </b>
+                      <input type="color" class="w-full" v-model="color"> 
+                    </div>
+                    <div class="flex">
+                      <b class="mr-2">State:</b>
+                      <textarea v-model="state" class="p-1 w-full border-[1px] border-black" />
+                    </div>
+                  </div>
                 <div class="mt-4 w-full flex justify-between">
                   <AppButton title="Save" :action="() => saveState(state)"/>
                   <AppButton title="Close" :action="closeModal" class="bg-red-500 border-red-500 text-white active:bg-red-500 active:border-red-500 active:text-red-500" />

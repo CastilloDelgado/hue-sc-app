@@ -37,7 +37,7 @@ const loop = () => {
     setTimeout(() => {
         // Update lights state
         steps.value[activeStep.value].forEach((lightState, lightIndex) => {
-            setLightState(lights.value[lightIndex], JSON.parse(lightState))
+            setLightState(lights.value[lightIndex], lightState)
         })
 
         activeStep.value = activeStep.value + 1
@@ -92,9 +92,7 @@ const togglePlaying = () => {
                     </div>
                     <div class="flex flex-col">
                         <p class="text-xs text-center hover:bg-black hover:text-white mr-1" :class="`${activeStep === stepIndex && playing ? 'bg-green-600 text-white' : ''}`">{{ stepIndex + 1 }}</p>
-                        <LightStep v-for="(lightStep, lightIndex) in step" :key="lightStep" class="" @click="openLightStateModal(sequenceIndex, stepIndex, lightIndex)">
-                            
-                        </LightStep>
+                        <LightStep v-for="(lightStep, lightIndex) in step" :key="lightStep" class="" @click="openLightStateModal(sequenceIndex, stepIndex, lightIndex)" />
                     </div>
                 </div>
             </div>
