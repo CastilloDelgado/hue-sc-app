@@ -24,9 +24,7 @@ export const useSequenceStore = defineStore("SequenceStore", {
 
         addStepToSequence(id){
             const index = this.sequences.findIndex((sequence) => sequence.id === id)
-            this.sequences[index].steps.push(this.sequences[index].lights.map((light) => ({
-                light
-            })))
+            this.sequences[index].steps.push(this.sequences[index].lights.map(() => ("")))
         },
 
         selectStep(sequenceIndex, stepIndex, lightIndex){
@@ -35,11 +33,7 @@ export const useSequenceStore = defineStore("SequenceStore", {
 
         updateStepState(newState){
             const { sequenceIndex, stepIndex, lightIndex } = this.stepSelected
-            const currentState = this.sequences[sequenceIndex].steps[stepIndex][lightIndex]
-            this.sequences[sequenceIndex].steps[stepIndex][lightIndex] = {
-                ...currentState,
-                ...newState
-            }
+            this.sequences[sequenceIndex].steps[stepIndex][lightIndex] = newState
         }
     },
 

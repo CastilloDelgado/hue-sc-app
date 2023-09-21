@@ -16,7 +16,7 @@ const { stepSelected } = storeToRefs(sequenceStore)
 
 const state = ref('')
 
-defineProps({
+const props = defineProps({
     isOpen: {
         type: Boolean,
         required: true
@@ -31,12 +31,9 @@ defineProps({
     }
 })
 
-const saveState = () => {
-    // sequenceStore.updateStepState({
-    //     on: on.value,
-    //     bri: bri.value,
-    //     color: color.value
-    // })
+const saveState = (newState) => {
+  sequenceStore.updateStepState(newState)
+  props.closeModal()
 }
 
 watch(stepSelected, () => {
@@ -95,7 +92,7 @@ watch(stepSelected, () => {
                 </div>
   
                 <div class="mt-4 w-full flex justify-between">
-                  <AppButton title="Save" :action="saveState"/>
+                  <AppButton title="Save" :action="() => saveState(state)"/>
                   <AppButton title="Close" :action="closeModal" class="bg-red-500 border-red-500 text-white active:bg-red-500 active:border-red-500 active:text-red-500" />
                 </div>
               </DialogPanel>

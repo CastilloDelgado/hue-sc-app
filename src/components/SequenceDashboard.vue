@@ -31,12 +31,13 @@ const playing = ref(false)
 const activeStep = ref(0)
 
 const steps = ref(sequenceStore.sequences[props.sequenceIndex].steps)
+const lights = ref(sequenceStore.sequences[props.sequenceIndex].lights)
 
 const loop = () => {
     setTimeout(() => {
         // Update lights state
         steps.value[activeStep.value].forEach((lightState, lightIndex) => {
-            setLightState(sequenceStore.sequences[props.sequenceIndex].lights[lightIndex], JSON.parse(lightState))
+            setLightState(lights.value[lightIndex], JSON.parse(lightState))
         })
 
         activeStep.value = activeStep.value + 1
