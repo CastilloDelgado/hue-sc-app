@@ -92,7 +92,7 @@ const togglePlaying = () => {
                     </div>
                     <div class="flex flex-col">
                         <p class="text-xs text-center hover:bg-black hover:text-white mr-1" :class="`${activeStep === stepIndex && playing ? 'bg-green-600 text-white' : ''}`">{{ stepIndex + 1 }}</p>
-                        <LightStep v-for="(lightStep, lightIndex) in step" :key="lightStep" class="" @click="openLightStateModal(sequenceIndex, stepIndex, lightIndex)" />
+                        <LightStep v-for="(lightStep, lightIndex) in step" :key="lightStep" class="" @click="openLightStateModal(sequenceIndex, stepIndex, lightIndex)" :class="`${lightStep !== '' ? 'bg-black' : ''}`" />
                     </div>
                 </div>
             </div>
