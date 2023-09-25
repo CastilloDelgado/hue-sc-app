@@ -29,22 +29,21 @@ const openLightStateModal = (sequenceIndex, stepIndex, lightIndex) => {
 
 const playing = ref(false)
 const activeStep = ref(0)
-
 const steps = ref(sequenceStore.sequences[props.sequenceIndex].steps)
 const lights = ref(sequenceStore.sequences[props.sequenceIndex].lights)
 const filteredSequence = ref([])
 
 
-watch(steps.value, () => {
-    filteredSequence.value = steps.value.map((step) => (step.filter((lightStep) => lightStep !== "")))
-    console.log(filteredSequence.value)
-})
+watch(steps.value, () => { filteredSequence.value = steps.value.map((step) => (step.filter((lightStep) => lightStep !== "")))})
 
 const loop = () => {
     setTimeout(() => {
         // Update lights state
         steps.value[activeStep.value].forEach((lightState, lightIndex) => {
-            setLightState(lights.value[lightIndex], lightState)
+            if(lightState !== ""){
+                console.log(lightState)
+                setLightState(lights.value[lightIndex], JSON.parse(lightState))
+            }
         })
 
         activeStep.value = activeStep.value + 1
