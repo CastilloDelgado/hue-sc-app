@@ -7,8 +7,10 @@ import SequenceCreator from "../components/SequenceCreator.vue";
 
 <template>
   <div class="p-4">
-    <HueSettings />
-    <LightsSettings />
+    <div class="flex flex-col md:flex-row">
+      <HueSettings class="w-full md:w-1/3" />
+      <LightsSettings class="w-full md:w-2/3" />
+    </div>
     <SequenceCreator />
   </div>
 </template>

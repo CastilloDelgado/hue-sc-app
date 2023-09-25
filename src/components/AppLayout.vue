@@ -5,7 +5,7 @@ import AppHeader from './AppHeader.vue';
 
 <template>
     <div class="flex justify-center bg-neutral-400 min-h-screen">
-        <div class="mx-5 bg-neutral-50">
+        <div class="mx-5 bg-neutral-50 container">
             <AppHeader></AppHeader>
             <slot />
         </div>
