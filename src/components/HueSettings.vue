@@ -79,7 +79,7 @@ onMounted(() => {
         <p class="text-2xl font-bold text-neutral-800 mb-4">Brige Settings</p>
         <div class="pl-4 border-l-2 border-black">
             <p class="text-sm text-red-500" v-if="errorMessage !== ''">*{{ errorMessage || "Unknown error" }}</p>
-            <p class="text-sm text-blue-500" v-if="id && ip && !username">*Press the Bridge Button to before create username.</p>
+            <p class="text-sm text-blue-500" v-if="id && ip && !username">* First press the button of your bridge, then press create username.</p>
             <AppInput v-model="id" title="ID" :loading="loadingIdAndIp"/>
             <AppInput v-model="ip" title="IP" :loading="loadingIdAndIp"/>
             <AppInput v-model="username" title="USERNAME" :loading="loadingUsername"/>
