@@ -38,6 +38,10 @@ export const useSequenceStore = defineStore("SequenceStore", {
         
         deleteSequence(sequenceIndex){
             this.sequences.splice(sequenceIndex, 1)
+        },
+
+        deleteStep(sequenceIndex, stepIndex){
+            this.sequences[sequenceIndex].steps.splice(stepIndex, 1)
         }
     },
 
