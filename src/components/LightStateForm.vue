@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogPanel,
   DialogTitle,
+  Switch,
 } from '@headlessui/vue'
 import AppButton from './AppButton.vue';
 import { ref, watch } from 'vue';
@@ -17,6 +18,7 @@ const { stepSelected } = storeToRefs(sequenceStore)
 
 const state = ref('')
 const color = ref('')
+const enabled = ref(false)
 
 const props = defineProps({
     isOpen: {
@@ -88,6 +90,16 @@ watch(color, () => {
                   Light State
                 </DialogTitle>
                 <div class="mb-6">
+                    <!-- On/Off -->
+                    <Switch
+                      v-model="enabled"
+                      :class="`${enabled ? 'bg-blue-600' : 'bg-gray-200'} relative inline-flex h-6 w-11 items-center rounded-full`"
+                    >
+                      <span className="sr-only">Enable notifications</span>
+                      <span
+                        :class="`${enabled ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition`"
+                      />
+                    </Switch>
                     <!-- Color Picker -->
                     <div class="flex mb-1">
                       <b class="mr-2" >Color: </b>
