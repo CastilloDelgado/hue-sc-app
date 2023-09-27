@@ -34,6 +34,10 @@ export const useSequenceStore = defineStore("SequenceStore", {
         updateStepState(newState){
             const { sequenceIndex, stepIndex, lightIndex } = this.stepSelected
             this.sequences[sequenceIndex].steps[stepIndex][lightIndex] = newState
+        },
+        
+        deleteSequence(sequenceIndex){
+            this.sequences.splice(sequenceIndex, 1)
         }
     },
 

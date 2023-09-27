@@ -68,16 +68,19 @@ const togglePlaying = () => {
 <template>
     <div class="mb-4">
         <div class="mb-3">
-            <div class="flex mb-2 items-end">
+            <div class="flex items-end mb-1">
                 <b class="mr-2 text-3xl font-bold text-blue-600">{{ sequence.name }}</b>
                 <b>BPM: </b>
                 <p>{{ sequence.bpm }}</p>
+            </div>
+            <div class="mb-2 flex items-end">
+                    <AppButton class="text-xs bg-red-500 text-white border-red-500 hover:border-black active:border-red-500 active:bg-red-500" title="Delete Sequence" :action="() => sequenceStore.deleteSequence(sequenceIndex)" />
             </div>
             <p class="text-xl font-bold text-neutral-500">Settings</p>
             <div>
                 <p>Actions</p>
                 <div class="flex">
-                    <AppButton class="mr-1" title="Add Step" :action="() => sequenceStore.addStepToSequence(sequence.id)"/>
+                    <AppButton class="mr-1" title="Add Step" @click="() => sequenceStore.addStepToSequence(sequence.id)"/>
                     <AppButton 
                         :title="!playing ? 'Play' : 'Stop'" 
                         class="text-white hover:border-black"
