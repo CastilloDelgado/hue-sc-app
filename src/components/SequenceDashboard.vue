@@ -74,7 +74,9 @@ const togglePlaying = () => {
                 <p>{{ sequence.bpm }}</p>
             </div>
             <div class="mb-2 flex items-end">
-                    <AppButton class="text-xs bg-red-500 text-white border-red-500 hover:border-black active:border-red-500 active:bg-red-500" title="Delete Sequence" :action="() => sequenceStore.deleteSequence(sequenceIndex)" />
+                    <AppButton class="text-xs bg-red-500 text-white border-red-500 hover:border-black active:border-red-500 active:bg-red-500" :action="() => sequenceStore.deleteSequence(sequenceIndex)">
+                        <p>Delete Sequence</p>
+                    </AppButton>
             </div>
             <p class="text-xl font-bold text-neutral-500">Settings</p>
             <div>

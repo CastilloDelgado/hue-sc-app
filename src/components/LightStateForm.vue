@@ -18,7 +18,8 @@ const { stepSelected } = storeToRefs(sequenceStore)
 
 const state = ref('')
 const color = ref('')
-const enabled = ref(false)
+const bri = ref(0)
+const isOn = ref(false)
 
 const props = defineProps({
     isOpen: {
@@ -44,10 +45,45 @@ watch(stepSelected, () => {
   state.value = sequenceStore.getState()
 })
 
+const cleanState = () => state.value = ""
+
 watch(color, () => {
-  const stateObject = JSON.parse(state.value)
-  stateObject.xy = hexToXy(color.value)
-  state.value = JSON.stringify(stateObject)
+  if(state.value === ""){
+    state.value = "{}"
+    const stateObject = JSON.parse(state.value)
+    stateObject.xy = hexToXy(color.value)
+    state.value = JSON.stringify(stateObject)
+  } else {
+    const stateObject = JSON.parse(state.value)
+    stateObject.xy = hexToXy(color.value)
+    state.value = JSON.stringify(stateObject)
+  }
+})
+
+watch(isOn, () => {
+  if(state.value === ""){
+    state.value = "{}"
+    const stateObject = JSON.parse(state.value)
+    stateObject.on = isOn.value
+    state.value = JSON.stringify(stateObject)
+  } else {
+    const stateObject = JSON.parse(state.value)
+    stateObject.on = isOn.value
+    state.value = JSON.stringify(stateObject)
+  }
+})
+
+watch(bri, () => {
+  if(state.value === ""){
+    state.value = "{}"
+    const stateObject = JSON.parse(state.value)
+    stateObject.bri = Number(bri.value)
+    state.value = JSON.stringify(stateObject)
+  } else {
+    const stateObject = JSON.parse(state.value)
+    stateObject.bri = Number(bri.value)
+    state.value = JSON.stringify(stateObject)
+  }
 })
 
 </script>
@@ -91,23 +127,32 @@ watch(color, () => {
                 </DialogTitle>
                 <div class="mb-6">
                     <!-- On/Off -->
-                    <Switch
-                      v-model="enabled"
-                      :class="`${enabled ? 'bg-blue-600' : 'bg-gray-200'} relative inline-flex h-6 w-11 items-center rounded-full`"
-                    >
-                      <span className="sr-only">Enable notifications</span>
-                      <span
-                        :class="`${enabled ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition`"
-                      />
+                    <div>
+                      <b class="mr-2" >On: </b>
+                      <Switch
+                      v-model="isOn"
+                      :class="`${isOn ? 'bg-blue-600' : 'bg-gray-200'} relative inline-flex h-6 w-11 items-center rounded-full`"
+                      >
+                      <span :class="`${isOn ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition`" />
                     </Switch>
+                  </div>
+                  <!--  BRI -->
+                    <div>
+                      <b class="mr-2" >Bri: </b>
+                      <input v-model="bri" type="range" min="0" max="254" />
+                    </div>
                     <!-- Color Picker -->
                     <div class="flex mb-1">
                       <b class="mr-2" >Color: </b>
                       <input type="color" class="w-full" v-model="color"> 
                     </div>
-                    <div class="flex">
+                    <div class="flex mb-2">
                       <b class="mr-2">State:</b>
                       <textarea v-model="state" class="p-1 w-full border-[1px] border-black" />
+                    </div>
+                      <!-- Clean state -->
+                    <div class="w-full flex justify-end">
+                      <AppButton title="Clean state" class="w-fit bg-yellow-500 border-yellow-500 hover:border-black" @click="cleanState" />
                     </div>
                   </div>
                 <div class="mt-4 w-full flex justify-between">
