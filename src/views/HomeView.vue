@@ -2,6 +2,16 @@
 import HueSettings from "@/components/HueSettings.vue"
 import LightsSettings from "../components/LightsSettings.vue";
 import SequenceCreator from "../components/SequenceCreator.vue";
+import { onMounted } from "vue";
+import { useSequenceStore } from "../stores/SequenceStore";
+
+const sequencesStore = useSequenceStore()
+
+onMounted(() => {
+  const savedSequences = JSON.parse(localStorage.getItem('savedSequences'))
+  console.log(savedSequences)
+  sequencesStore.sequences = JSON.parse(localStorage.getItem('savedSequences'))
+})
 
 </script>
 

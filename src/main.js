@@ -13,5 +13,6 @@ app.use(createPinia())
 app.use(router)
 
 const bridgeStore = useBridgeStore()
+const SequenceStore = useBridgeStore()
 
 app.mount('#app')

@@ -12,6 +12,7 @@ const { sequences } = storeToRefs(sequenceStore)
 const isCreateFormModalOpen = ref(false)
 const closeCreateFormModal = () => isCreateFormModalOpen.value = false
 const openCreateFormModal = () => isCreateFormModalOpen.value = true
+const saveSequencesLocally = () => localStorage.setItem('savedSequences', JSON.stringify(sequences.value))
 
 </script>
 
@@ -19,7 +20,8 @@ const openCreateFormModal = () => isCreateFormModalOpen.value = true
     <div class="mt-2">
         <div class="flex items-end mb-4">
             <p class="text-2xl font-bold text-neutral-800 mr-2">Sequences</p>
-            <AppButton title="Create Sequence" :action="openCreateFormModal"/>
+            <AppButton class="mr-1" title="Create Sequence" :action="openCreateFormModal"/>
+            <AppButton title="Save Sequences Locally" :action="saveSequencesLocally"/>
         </div>
         <div class="pl-4 border-l-2 border-black">
             <SequenceDashboard v-for="(sequence, sequenceIndex) in sequences" :key="sequence.key" :sequence="sequence" :sequence-index="sequenceIndex"/>
