@@ -41,7 +41,6 @@ const loop = () => {
         // Update lights state
         steps.value[activeStep.value].forEach((lightState, lightIndex) => {
             if(lightState !== ""){
-                console.log(lightState)
                 setLightState(lights.value[lightIndex], JSON.parse(lightState))
             }
         })
