@@ -19,6 +19,7 @@ const { stepSelected } = storeToRefs(sequenceStore)
 const state = ref('')
 const color = ref('')
 const bri = ref(0)
+const transitiontime = ref(0)
 const isOn = ref(false)
 
 const props = defineProps({
@@ -86,6 +87,19 @@ watch(bri, () => {
   }
 })
 
+watch(transitiontime, () => {
+  if(state.value === ""){
+    state.value = "{}"
+    const stateObject = JSON.parse(state.value)
+    stateObject.transitiontime = Number(transitiontime.value)
+    state.value = JSON.stringify(stateObject)
+  } else {
+    const stateObject = JSON.parse(state.value)
+    stateObject.transitiontime = Number(transitiontime.value)
+    state.value = JSON.stringify(stateObject)
+  }
+})
+
 </script>
 
 <template>
@@ -136,10 +150,15 @@ watch(bri, () => {
                       <span :class="`${isOn ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition`" />
                     </Switch>
                   </div>
-                  <!--  BRI -->
+                    <!--  BRI -->
                     <div>
                       <b class="mr-2" >Bri: </b>
                       <input v-model="bri" type="range" min="0" max="254" />
+                    </div>
+                    <!--  Transitiontime -->
+                    <div>
+                      <b class="mr-2" >Transitiontime: </b>
+                      <input v-model="transitiontime" type="range" min="0" max="20" />
                     </div>
                     <!-- Color Picker -->
                     <div class="flex mb-1">
