@@ -18,10 +18,10 @@ const saveSequencesLocally = () => localStorage.setItem('savedSequences', JSON.s
 
 <template>
     <div class="mt-2">
-        <div class="flex items-end mb-4">
+        <div class="mb-4 flex flex-wrap">
             <p class="text-2xl font-bold text-neutral-800 mr-2">Sequences</p>
-            <AppButton class="mr-1" title="Create Sequence" :action="openCreateFormModal"/>
-            <AppButton title="Save Sequences Locally" :action="saveSequencesLocally"/>
+            <AppButton class="mr-1 mb-1 w-fit" title="Create Sequence" :action="openCreateFormModal"/>
+            <AppButton class="mb-1 w-fit" title="Save Sequences Locally" :action="saveSequencesLocally"/>
         </div>
         <div class="pl-4 border-l-2 border-black">
             <SequenceDashboard v-for="(sequence, sequenceIndex) in sequences" :key="sequence.key" :sequence="sequence" :sequence-index="sequenceIndex"/>
