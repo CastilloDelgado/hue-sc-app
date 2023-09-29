@@ -23,7 +23,7 @@ const fetchLights = () => {
             bridgeStore.setLights(lightsData)
         })
         .catch((error) => {
-            console.log(error)
+            // console.log(error)
         })
         .then(() => {
             loading.value = false

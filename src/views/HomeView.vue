@@ -7,11 +7,7 @@ import { useSequenceStore } from "../stores/SequenceStore";
 
 const sequencesStore = useSequenceStore()
 
-onMounted(() => {
-  const savedSequences = JSON.parse(localStorage.getItem('savedSequences'))
-  console.log(savedSequences)
-  sequencesStore.sequences = JSON.parse(localStorage.getItem('savedSequences'))
-})
+onMounted(() => sequencesStore.sequences = JSON.parse(localStorage.getItem('savedSequences')))
 
 </script>
 
