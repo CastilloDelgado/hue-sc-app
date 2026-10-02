@@ -7,6 +7,7 @@ import AppButton from "./AppButton.vue"
 import AppInput from "./AppInput.vue";
 
 
+const accountStorage = useAccountStorage()
 const bridgeStore = useBridgeStore()
 const { id, ip, username } = storeToRefs(bridgeStore)
 const loadingIdAndIp = ref(false)
@@ -21,9 +22,9 @@ const fetchUsername = () => {
             if(response.data[0].success.username){
                 const newUsername = response.data[0].success.username
                 bridgeStore.setUsername(newUsername)
-                const bridgeSettings = JSON.parse(localStorage.getItem('bridgeSettings'))
+                const bridgeSettings = accountStorage.read('bridgeSettings', {})
                 bridgeSettings.username = newUsername
-                localStorage.setItem('bridgeSettings', JSON.stringify(bridgeSettings))
+                accountStorage.write('bridgeSettings', bridgeSettings)
             } else {
                 errorMessage.value = "Press the bridge button to create username."
             }
@@ -41,10 +42,10 @@ const fetchSettings = () => {
             if(response && response.data && response.data[0]){
                 const data = response.data[0]
                 bridgeStore.setIdAndIp(data.id, data.internalipaddress)
-                localStorage.setItem('bridgeSettings', JSON.stringify({
+                accountStorage.write('bridgeSettings', {
                     id: data.id,
                     ip: data.internalipaddress
-                }))
+                })
             }
         })
         .catch((error) => {
@@ -56,10 +57,10 @@ const fetchSettings = () => {
  
 onMounted(() => {
     // Get local storage data
-    const bridgeSettingsLocal = localStorage.getItem("bridgeSettings")
+    const bridgeSettingsLocal = accountStorage.read("bridgeSettings")
 
     if(bridgeSettingsLocal){
-        const bridgeSettings = JSON.parse(bridgeSettingsLocal)
+        const bridgeSettings = bridgeSettingsLocal
 
         if(bridgeSettings.id && bridgeSettings.ip){
             bridgeStore.setIdAndIp(bridgeSettings.id, bridgeSettings.ip)

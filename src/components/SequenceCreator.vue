@@ -12,7 +12,8 @@ const { sequences } = storeToRefs(sequenceStore)
 const isCreateFormModalOpen = ref(false)
 const closeCreateFormModal = () => isCreateFormModalOpen.value = false
 const openCreateFormModal = () => isCreateFormModalOpen.value = true
-const saveSequencesLocally = () => localStorage.setItem('savedSequences', JSON.stringify(sequences.value))
+const accountStorage = useAccountStorage()
+const saveSequencesLocally = () => accountStorage.write('savedSequences', sequences.value)
 
 </script>
 

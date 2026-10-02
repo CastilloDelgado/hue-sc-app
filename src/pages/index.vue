@@ -7,7 +7,11 @@ import { useSequenceStore } from "../stores/SequenceStore";
 
 const sequencesStore = useSequenceStore()
 
-onMounted(() => sequencesStore.sequences = JSON.parse(localStorage.getItem('savedSequences')))
+const accountStorage = useAccountStorage()
+onMounted(() => {
+  const saved = accountStorage.read('savedSequences', [])
+  sequencesStore.sequences = Array.isArray(saved) ? saved : []
+})
 
 </script>
 

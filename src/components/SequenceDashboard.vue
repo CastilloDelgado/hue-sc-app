@@ -4,7 +4,7 @@ import { useSequenceStore } from '../stores/SequenceStore'
 import AppButton from './AppButton.vue';
 import AppLoader from './AppLoader.vue';
 import LightStateForm from "./LightStateForm.vue"
-import { ref, watch } from 'vue';
+import { ref, watch, onBeforeUnmount } from 'vue';
 import { setLightState } from "../composables/HueServices"
 
 const sequenceStore = useSequenceStore()
@@ -36,8 +36,15 @@ const filteredSequence = ref([])
 
 watch(steps.value, () => { filteredSequence.value = steps.value.map((step) => (step.filter((lightStep) => lightStep !== "")))})
 
+let playbackTimer
+onBeforeUnmount(() => {
+    playing.value = false
+    clearTimeout(playbackTimer)
+})
+
 const loop = () => {
-    setTimeout(() => {
+    playbackTimer = setTimeout(() => {
+        if (!playing.value || !steps.value.length) return
         // Update lights state
         steps.value[activeStep.value].forEach((lightState, lightIndex) => {
             if(lightState !== ""){
