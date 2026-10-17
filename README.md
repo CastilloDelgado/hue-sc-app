@@ -45,6 +45,17 @@ No guardes credenciales en `public/` ni en configuración pública de Nuxt.
 
 ## Autenticación
 
+### Dashboard
+
+El menú lateral separa el flujo en `/` (Conexión HUE Bridge), `/luces`
+y `/animaciones`. En pantallas pequeñas se abre con el botón «Menú».
+La configuración del bridge y las secuencias se recuperan al entrar al
+dashboard, incluso al abrir directamente una sección.
+En `/perfil` se puede actualizar el correo confirmando la contraseña actual;
+`PATCH /api/auth/profile` valida la sesión, el origen, la contraseña y la
+unicidad del correo. El ID de usuario se conserva para mantener sus datos locales.
+El botón de cerrar sesión está al final del menú lateral.
+
 Registro en `/register` e inicio de sesión en `/login`. El registro inicia
 sesión automáticamente. Las contraseñas requieren 12–128 caracteres y se
 almacenan con hash scrypt; la sesión usa una cookie cifrada HttpOnly,

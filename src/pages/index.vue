@@ -1,41 +1,13 @@
 <script setup>
-import HueSettings from "@/components/HueSettings.vue"
-import LightsSettings from "../components/LightsSettings.vue";
-import SequenceCreator from "../components/SequenceCreator.vue";
-import { onMounted } from "vue";
-import { useSequenceStore } from "../stores/SequenceStore";
-
-const sequencesStore = useSequenceStore()
-
-const accountStorage = useAccountStorage()
-onMounted(() => {
-  const saved = accountStorage.read('savedSequences', [])
-  sequencesStore.sequences = Array.isArray(saved) ? saved : []
-})
-
+useHead({ title: 'Conexión HUE Bridge · Hue Show Creator' })
 </script>
 
 <template>
-  <div class="p-4">
-    <div class="flex flex-col lg:flex-row">
-      <div class="w-full lg:w-1/3 pr-6" >
-        <div>
-          <p class="text-3xl font-bold text-red-500">Step 1</p>
-          <p class="text-xs text-justify mb-1">First, we need to link the app with your bridge, to do this we are trying to automatically detect the IP and ID of your Bridge in your local network. Be sure that you are at the same network that the one your bridge is connected. If we can't find your information, you can provide it manually.</p>
-          <p class="text-xs text-justify mb-1">After that, you need to create an username, for that you need to press the button on your bridge and then press "Create Username" button down below.</p>
-        </div>
-        <HueSettings/>
-      </div>
-      <div>
-        <div  class="w-full lg:w-2/3" >
-          <p class="text-3xl font-bold text-red-500">Step 2</p>
-          <p class="text-xs text-justify mb-1">After the 1st step is completed, we can test the app by getting all the lights that are linked to your bridge. This should be executed automatically when the username is created or you can execute it manually clicking the "Get Lights" button.</p>
-        </div>
-        <LightsSettings/>
-      </div>
-    </div>
-    <p class="text-3xl font-bold text-red-500 mb-1">Step 3</p>
-    <p class="text-xs text-justify mb-1">This is the sequence creator. First you need to create a sequence, click on the "Create Sequence" button and then fill the form. After that, a new sequence will be shown down below. You can add steps for every light filling the state form. Get creative here and create light shows for you favorite songs!!! (Please notice that the max of request of the bridge are 8 calls per second)</p>
-    <SequenceCreator />
-  </div>
+  <section class="dashboard-section">
+    <p class="text-sm text-neutral-400 mb-2">Paso 1</p>
+    <h1 class="text-3xl font-bold text-blue-400 mb-3">Conexión HUE Bridge</h1>
+    <p class="text-neutral-300 mb-2">Conecta tu bridge a la misma red que este dispositivo. Intentaremos detectarlo automáticamente; también puedes introducir sus datos manualmente.</p>
+    <p class="text-neutral-300 mb-8">Para vincularlo, pulsa el botón físico del bridge y después «Crear usuario».</p>
+    <HueSettings />
+  </section>
 </template>

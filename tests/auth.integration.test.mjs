@@ -106,9 +106,34 @@ test('email/password authentication end to end', { timeout: 60000 }, async () =>
     response = await fetch(`${base}/`, { headers: { Cookie: cookie }, redirect: 'manual' })
     assert.equal(response.status, 200)
     const page = await response.text()
-    assert.match(page, /Step 1/)
+    assert.match(page, /Paso 1/)
     assert.match(page, /Cerrar sesión/)
     assert.ok(!page.includes(user.password_hash))
+    for (const [route, title] of [['/luces', 'Luces del bridge'], ['/animaciones', 'Animaciones'], ['/perfil', 'Contraseña actual']]) {
+      response = await fetch(`${base}${route}`, { headers: { Cookie: cookie }, redirect: 'manual' })
+      assert.equal(response.status, 200)
+      assert.match(await response.text(), new RegExp(title))
+      assert.equal((await fetch(`${base}${route}`, { redirect: 'manual' })).status, 302)
+    }
+    async function updateProfile(body, origin = base, sessionCookie = cookie) {
+      return fetch(`${base}/api/auth/profile`, {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json', Origin: origin, Cookie: sessionCookie },
+        body: JSON.stringify(body)
+      })
+    }
+    const newEmail = 'updated@example.com'
+    assert.equal((await updateProfile({ email: newEmail, password: credentials.password }, base, '')).status, 401)
+    assert.equal((await updateProfile({ email: newEmail, password: credentials.password }, 'https://foreign.example')).status, 403)
+    assert.equal((await updateProfile({ email: newEmail, password: 'wrong password' })).status, 401)
+    assert.equal((await updateProfile({ email: 'invalid', password: credentials.password })).status, 400)
+    response = await updateProfile({ email: newEmail, password: credentials.password })
+    assert.equal(response.status, 200)
+    assert.deepEqual((await response.json()).user, { id: created.user.id, email: newEmail })
+    response = await post('/api/auth/login', { ...credentials, email: newEmail })
+    assert.equal(response.status, 200)
+    assert.equal((await response.json()).user.id, created.user.id)
+    assert.equal((await updateProfile(credentials)).status, 200)
+
     response = await fetch(`${base}/login`, { headers: { Cookie: cookie }, redirect: 'manual' })
     assert.equal(response.status, 302)
     assert.equal(response.headers.get('location'), '/')

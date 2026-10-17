@@ -20,7 +20,7 @@ const saveSequencesLocally = () => accountStorage.write('savedSequences', sequen
 <template>
     <div class="mt-2">
         <div class="mb-4 flex flex-wrap">
-            <p class="text-2xl font-bold text-neutral-800 mr-2">Sequences</p>
+            <p class="text-2xl font-bold text-blue-400 mr-2">Sequences</p>
             <AppButton class="mr-1 mb-1 w-fit" title="Create Sequence" :action="openCreateFormModal"/>
             <AppButton class="mb-1 w-fit" title="Save Sequences Locally" :action="saveSequencesLocally"/>
         </div>

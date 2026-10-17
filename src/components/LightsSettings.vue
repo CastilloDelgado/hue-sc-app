@@ -32,7 +32,7 @@ const fetchLights = () => {
 
 
 onMounted(() => {   
-    if(id && ip && username){
+    if(ip.value && username.value){
         fetchLights()
     }
 })
@@ -41,10 +41,10 @@ onMounted(() => {
 
 <template>
     <div class="mt-2 mb-6">
-        <p class="text-2xl font-bold text-neutral-800 mb-4">Lights Settings</p>
+        <p class="text-2xl font-bold text-blue-400 mb-4">Luces del bridge</p>
         <div class="pl-4 border-l-2 border-black">
             <div class="mb-2 flex">
-                <AppButton title="Get Lights" :action="fetchLights"  />
+                <AppButton title="Obtener luces" :action="fetchLights" :disabled="!ip || !username || loading" />
                 <AppLoader class="text-red-500 ml-2" v-if="loading"/>
             </div>
             <div class="flex overflow-auto">

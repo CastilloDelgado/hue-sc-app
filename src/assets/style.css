@@ -1,3 +1,143 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.dashboard-shell {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+}
+
+.dashboard-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: #101010;
+  border-right: 1px solid #262626;
+}
+
+.dashboard-sidebar header p:first-child {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.dashboard-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.5rem;
+  color: #a3a3a3;
+}
+
+.dashboard-link:hover {
+  background: #1c1c1c;
+  color: #f5f5f5;
+}
+
+.dashboard-link.is-active {
+  background: #172554;
+  color: #60a5fa;
+}
+
+.dashboard-link:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+.dashboard-content {
+  padding: clamp(1.5rem, 4vw, 4rem);
+}
+
+.dashboard-section {
+  max-width: 1100px;
+  margin-inline: auto;
+}
+
+@media (max-width: 767px) {
+  .dashboard-shell { display: block; }
+  .dashboard-sidebar { display: none; position: static; height: auto; min-height: calc(100dvh - 60px); }
+  .dashboard-sidebar.is-open { display: flex; }
+}
+
+.main-theme,
+.hue-dialog {
+  font-family: 'Space Grotesk', sans-serif;
+  color: #f5f5f5;
+}
+
+.hue-dialog {
+  background-color: #171717;
+  border-color: #404040;
+  border-radius: 0.75rem;
+}
+
+:is(.main-theme, .hue-dialog) :is(.text-neutral-800, .text-gray-900) {
+  color: #f5f5f5;
+}
+
+:is(.main-theme, .hue-dialog) :is(.text-neutral-500, .text-neutral-600) {
+  color: #a3a3a3;
+}
+
+:is(.main-theme, .hue-dialog) :is(.text-blue-600, .text-blue-700) {
+  color: #60a5fa;
+}
+
+:is(.main-theme, .hue-dialog) .border-black {
+  border-color: #525252;
+}
+
+:is(.main-theme, .hue-dialog) :is(input:not([type='range']):not([type='color']), select) {
+  background-color: #171717;
+  color: #f5f5f5;
+  border-color: #525252;
+  border-radius: 0.375rem;
+}
+
+:is(.main-theme, .hue-dialog) :is(input, select):focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+:is(.main-theme, .hue-dialog) .hue-action {
+  cursor: pointer;
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  color: white;
+  background-color: #2563eb;
+  border-color: #2563eb;
+  transition: transform 150ms ease, background-color 200ms ease, border-color 200ms ease;
+}
+
+:is(.main-theme, .hue-dialog) .hue-action:hover:not(:disabled) {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+:is(.main-theme, .hue-dialog) .hue-action:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+:is(.main-theme, .hue-dialog) .hue-action:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 3px;
+}
+
+:is(.main-theme, .hue-dialog) .hue-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.main-theme [tabindex='100'].bg-black {
+  background-color: #a855f7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.main-theme, .hue-dialog) .hue-action {
+    transition: none;
+    transform: none !important;
+  }
+}

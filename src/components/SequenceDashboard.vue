@@ -84,7 +84,7 @@ const togglePlaying = () => {
                         <p>Delete Sequence</p>
                     </AppButton>
             </div>
-            <p class="text-xl font-bold text-neutral-500">Settings</p>
+            <p class="text-xl font-bold text-blue-400">Settings</p>
             <div>
                 <p>Actions</p>
                 <div class="flex">
@@ -100,7 +100,7 @@ const togglePlaying = () => {
             </div>
         </div>
         <div>
-            <p class="text-xl font-bold text-neutral-500 mb-2">Steps</p>
+            <p class="text-xl font-bold text-blue-400 mb-2">Steps</p>
             <div class="flex overflow-auto">
                 <div v-for="(step, stepIndex) in sequence.steps" :key="step" class="flex flex-row">
                     <div v-if="stepIndex === 0">

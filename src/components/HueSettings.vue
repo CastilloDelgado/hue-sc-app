@@ -14,6 +14,9 @@ const loadingIdAndIp = ref(false)
 const loadingUsername = ref(false)
 
 const errorMessage = ref('')
+const saveSettings = () => accountStorage.write('bridgeSettings', {
+    id: id.value, ip: ip.value, username: username.value
+})
 
 const fetchUsername = () => {
     loadingUsername.value = true
@@ -77,7 +80,7 @@ onMounted(() => {
 
 <template>
     <div class="mt-2 mb-6">
-        <p class="text-2xl font-bold text-neutral-800 mb-4">Brige Settings</p>
+        <p class="text-2xl font-bold text-blue-400 mb-4">Configuración del bridge</p>
         <div class="pl-4 border-l-2 border-black">
             <p class="text-sm text-red-500 mb-1" v-if="errorMessage !== ''">*{{ errorMessage || "Unknown error" }}</p>
             <p class="text-sm text-blue-500 mb-1" v-if="id && ip && !username">* First press the button of your bridge, then press create username.</p>
@@ -85,8 +88,8 @@ onMounted(() => {
             <AppInput v-model="ip" title="IP" :loading="loadingIdAndIp"/>
             <AppInput v-model="username" title="USERNAME" :loading="loadingUsername"/>
             <div class="flex">
-                <AppButton title="Create Username" class="mr-1" :disabled="id === '' || ip === '' || username !== ''" :action="fetchUsername"/>
-                <AppButton title="Save Data" />
+                <AppButton title="Crear usuario" class="mr-1" :disabled="id === '' || ip === '' || username !== ''" :action="fetchUsername"/>
+                <AppButton title="Guardar datos" :action="saveSettings" />
             </div>
         </div>
     </div>
