@@ -13,6 +13,9 @@ export function useAccountStorage() {
         return fallback
       }
     },
+    remove(name) {
+      localStorage.removeItem(keyFor(name))
+    },
     write(name, value) {
       localStorage.setItem(keyFor(name), JSON.stringify(value))
     }

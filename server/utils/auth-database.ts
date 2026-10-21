@@ -33,6 +33,18 @@ export function authDatabase() {
       user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       PRIMARY KEY (provider, provider_user_id)
     );
+    CREATE TABLE IF NOT EXISTS devices (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      bridge_id TEXT NOT NULL,
+      name TEXT NOT NULL,
+      ip TEXT NOT NULL,
+      credential TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      last_connected_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(user_id, bridge_id)
+    );
     CREATE TABLE IF NOT EXISTS auth_attempts (
       key TEXT PRIMARY KEY,
       attempts INTEGER NOT NULL,

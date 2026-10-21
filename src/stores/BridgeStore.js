@@ -5,7 +5,9 @@ export const useBridgeStore = defineStore("BridgeStore", {
         id: '',
         ip: '',
         username: '',
-        lights: []
+        lights: [],
+        devices: [],
+        devicesLoaded: false
     }),
     
     actions: {

@@ -4,6 +4,7 @@ import { computed, ref } from 'vue'
 const props = defineProps({ registration: { type: Boolean, default: false } })
 const email = ref('')
 const password = ref('')
+const showPassword = ref(false)
 const confirmation = ref('')
 const pending = ref(false)
 const error = ref('')
@@ -22,6 +23,7 @@ async function submit() {
     await $fetch(`/api/auth/${props.registration ? 'register' : 'login'}`, {
       method: 'POST', body: { email: email.value, password: password.value }
     })
+    showPassword.value = false
     password.value = ''
     confirmation.value = ''
     await refreshSession()
@@ -45,7 +47,16 @@ async function submit() {
       </div>
       <div>
         <label for="password" class="block text-sm font-semibold mb-2">Contraseña</label>
-        <input id="password" v-model="password" type="password" name="password" :autocomplete="registration ? 'new-password' : 'current-password'" required :minlength="registration ? 12 : 1" maxlength="128" :disabled="pending" :aria-describedby="registration ? 'password-help' : undefined" class="w-full rounded border border-neutral-400 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" />
+        <div class="relative">
+          <input id="password" v-model="password" :type="showPassword ? 'text' : 'password'" name="password" :autocomplete="registration ? 'new-password' : 'current-password'" required :minlength="registration ? 12 : 1" maxlength="128" :disabled="pending" :aria-describedby="registration ? 'password-help' : undefined" class="w-full rounded border border-neutral-400 pl-3 pr-12 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" />
+          <button type="button" class="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded text-neutral-500 hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-600 disabled:opacity-50" :aria-label="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'" :aria-pressed="showPassword" aria-controls="password" :disabled="pending" @click="showPassword = !showPassword">
+            <svg aria-hidden="true" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
+              <circle cx="12" cy="12" r="3" />
+              <path v-if="showPassword" d="m3 3 18 18" />
+            </svg>
+          </button>
+        </div>
         <p v-if="registration" id="password-help" class="mt-2 text-xs text-neutral-600">Usa entre 12 y 128 caracteres. Puedes usar una frase.</p>
       </div>
       <div v-if="registration">

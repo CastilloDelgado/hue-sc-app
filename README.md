@@ -35,8 +35,8 @@ Este proyecto requiere un servidor para ejecutar las rutas API.
 - `public/`: archivos públicos.
 
 Nuxt renderiza la página en el servidor y la hidrata en el navegador.
-Las secuencias y datos del bridge siguen en `localStorage`, separados por
-usuario. Los usuarios se guardan en SQLite y el acceso requiere una sesión. Las llamadas de control Hue siguen saliendo
+Las secuencias siguen en `localStorage`, separadas por usuario. Los bridges
+se guardan en SQLite asociados a la cuenta. Los usuarios se guardan en SQLite y el acceso requiere una sesión. Las llamadas de control Hue siguen saliendo
 del navegador al bridge en la red local, con las mismas restricciones de
 conectividad y HTTP del proyecto original.
 
@@ -104,8 +104,10 @@ correo duplicado, login, cookies, logout, protección de rutas, persistencia,
 CSRF y límites de intentos. No escriben usuarios en la base de desarrollo.
 
 Los datos locales antiguos (`savedSequences`, `bridgeSettings`) permanecen en
-el navegador sin asignarse automáticamente a una cuenta. Los datos nuevos
-usan claves con el ID del usuario. No se sincronizan entre dispositivos.
+el navegador sin asignarse automáticamente a una cuenta. Las secuencias nuevas
+usan claves con el ID del usuario y no se sincronizan entre dispositivos.
+Los bridges vinculados se sincronizan mediante la cuenta; la configuración
+local del bridge se migra después de comprobar la conexión.
 
 ### Google más adelante
 
@@ -117,3 +119,32 @@ se requerirá una sesión o verificación explícita; no se vincularán cuentas
 solo por coincidir el correo.
 
 Este alcance no incluye verificación de correo ni recuperación de contraseña.
+
+## Conexión al Hue Bridge
+
+La búsqueda consulta `https://discovery.meethue.com/` directamente desde el
+navegador del usuario, no desde el VPS. Permite elegir entre varios bridges
+y completar la IP manualmente; el enlace a Hue Discovery abre en otra pestaña.
+La vinculación requiere pulsar el botón físico del bridge y después Conectar.
+El ID se obtiene del bridge. La tabla `devices` permite varios bridges por cuenta,
+con nombre, IP, ID, fechas y credencial cifrada con AES-256-GCM. La clave se
+deriva de `NUXT_SESSION_PASSWORD` y el cifrado está asociado al usuario y bridge.
+Mantén ese secreto estable y respáldalo junto con la base: cambiarlo impide
+descifrar las credenciales existentes y obliga a recuperar o volver a vincular
+los bridges. Nunca publiques ese secreto.
+
+`GET /api/devices` devuelve únicamente los bridges de la sesión, incluida la
+credencial necesaria para comunicarse desde el navegador con el bridge.
+`POST /api/devices` guarda o actualiza un bridge de esa cuenta por su ID.
+No se almacena la credencial en la cookie de sesión ni se renderiza en HTML.
+Las respuestas API no se almacenan en caché. La configuración local previa
+se elimina después de guardarla correctamente en el servidor.
+
+El servidor confía en la comprobación de conexión realizada por el navegador:
+la fecha de conexión registrada no es una verificación independiente del VPS.
+Al volver se comprueba la conexión guardada y, si falla, se intenta descubrir de nuevo.
+
+El dispositivo debe poder acceder a la red del bridge. Las llamadas actuales
+al bridge usan HTTP: la compatibilidad desde el dominio HTTPS de producción
+debe validarse en los navegadores de destino por restricciones de contenido
+mixto, CORS y acceso a red local. La entrada manual no evita esas restricciones.

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { watch, ref } from 'vue';
 import { useBridgeStore } from "../stores/BridgeStore"
 import { storeToRefs } from 'pinia';
 import LightInfo from './LightInfo.vue'
@@ -8,34 +8,32 @@ import AppLoader from './AppLoader.vue';
 import { getLights } from '../composables/HueServices';
 
 const bridgeStore = useBridgeStore()
-const { id, ip, username, lights } = storeToRefs(bridgeStore)
+const { ip, username, lights } = storeToRefs(bridgeStore)
 const loading = ref(false)
 
-const fetchLights = () => {
+const error = ref('')
+let latestRequest = 0
+const fetchLights = async () => {
+    const request = ++latestRequest
     loading.value = true
-    getLights()
-        .then((response) => {
-            const lightsData = Object.entries(response.data).map(([key, lightData]) => ({
-                id: parseInt(key),
-                ...lightData
-            }))
-
-            bridgeStore.setLights(lightsData)
-        })
-        .catch((error) => {
-            // console.log(error)
-        })
-        .then(() => {
-            loading.value = false
-        })
+    error.value = ''
+    bridgeStore.setLights([])
+    try {
+        const { data } = await getLights()
+        if (request !== latestRequest) return
+        if (!data || Array.isArray(data) || typeof data !== 'object') throw new Error('El bridge rechazó el acceso. Comprueba la conexión en Hue Bridge.')
+        bridgeStore.setLights(Object.entries(data).map(([key, light]) => ({ ...light, id: Number(key) })))
+    } catch (failure) {
+        if (request === latestRequest) error.value = failure.isAxiosError ? 'No pudimos cargar las luces. Comprueba que estés en la red del bridge e intenta de nuevo.' : failure.message
+    } finally {
+        if (request === latestRequest) loading.value = false
+    }
 }
 
-
-onMounted(() => {   
-    if(ip.value && username.value){
-        fetchLights()
-    }
-})
+watch([ip, username], () => {
+    if (ip.value && username.value) fetchLights()
+    else { latestRequest++; loading.value = false; bridgeStore.setLights([]) }
+}, { immediate: true })
 
 </script>
 
@@ -47,6 +45,7 @@ onMounted(() => {
                 <AppButton title="Obtener luces" :action="fetchLights" :disabled="!ip || !username || loading" />
                 <AppLoader class="text-red-500 ml-2" v-if="loading"/>
             </div>
+            <p v-if="error" role="alert" class="text-red-400 mb-3">{{ error }}</p>
             <div class="flex overflow-auto">
                 <div v-for="light in lights" :key="light.id">
                     <LightInfo :light="light" />

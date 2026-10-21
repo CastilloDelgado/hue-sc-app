@@ -134,6 +134,35 @@ test('email/password authentication end to end', { timeout: 60000 }, async () =>
     assert.equal((await response.json()).user.id, created.user.id)
     assert.equal((await updateProfile(credentials)).status, 200)
 
+    const deviceData = { bridgeId: 'ECB5FAFFFE0FD6F8', ip: '192.168.0.102', name: 'Sala', username: 'test-bridge-credential-1234567890' }
+    assert.equal((await fetch(`${base}/api/devices`)).status, 401)
+    assert.equal((await post('/api/devices', deviceData, { Cookie: cookie, Origin: 'https://foreign.example' })).status, 403)
+    assert.equal((await post('/api/devices', { ...deviceData, ip: 'invalid' }, { Cookie: cookie })).status, 400)
+    assert.equal((await post('/api/devices', deviceData, { Cookie: cookie })).status, 200)
+    const getDevices = async (sessionCookie = cookie) => {
+      const result = await fetch(`${base}/api/devices`, { headers: { Cookie: sessionCookie } })
+      assert.equal(result.status, 200)
+      assert.match(result.headers.get('cache-control'), /no-store/)
+      return (await result.json()).devices
+    }
+    const firstDevice = (await getDevices())[0]
+    assert.equal(firstDevice.username, deviceData.username)
+    assert.equal((await post('/api/devices', { ...deviceData, ip: '192.168.0.103' }, { Cookie: cookie })).status, 200)
+    assert.equal((await getDevices()).length, 1)
+    assert.equal((await getDevices())[0].id, firstDevice.id)
+    const deviceDb = new DatabaseSync(databasePath)
+    const encrypted = deviceDb.prepare('SELECT credential FROM devices').get().credential
+    assert.ok(!encrypted.includes(deviceData.username))
+    assert.match(encrypted, /^v1\./)
+    deviceDb.close()
+    const secondAccount = await post('/api/auth/register', { email: 'second@example.com', password: credentials.password })
+    assert.equal(secondAccount.status, 201)
+    const otherCookie = secondAccount.headers.getSetCookie().find(value => value.startsWith('hue-session=')).split(';')[0]
+    assert.deepEqual(await getDevices(otherCookie), [])
+    assert.equal((await post('/api/devices', { ...deviceData, username: 'second-account-credential' }, { Cookie: otherCookie })).status, 200)
+    assert.equal((await getDevices())[0].username, deviceData.username)
+    assert.equal((await getDevices(otherCookie))[0].username, 'second-account-credential')
+
     response = await fetch(`${base}/login`, { headers: { Cookie: cookie }, redirect: 'manual' })
     assert.equal(response.status, 302)
     assert.equal(response.headers.get('location'), '/')
@@ -161,6 +190,9 @@ test('email/password authentication end to end', { timeout: 60000 }, async () =>
     assert.deepEqual((await response.json()).user, created.user)
     response = await fetch(`${base}/api/_auth/session`, { headers: { Cookie: cookie } })
     assert.deepEqual((await response.json()).user, created.user)
+
+    assert.equal((await getDevices())[0].ip, '192.168.0.103')
+    assert.equal((await getDevices())[0].username, deviceData.username)
 
     for (let i = 0; i < 11; i++) {
       response = await post('/api/auth/login', { email: 'throttle@example.com', password: 'wrong password' })

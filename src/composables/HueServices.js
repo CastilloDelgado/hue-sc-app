@@ -15,7 +15,9 @@ const createApiUrlWithUsername = () => {
     return(`${createApiUrl()}/api/${username.value}`)
 }
 
-export const fetchBridgeSettings = async () => axios.get(HUE_DISCOVER_URL)
-export const createUsername = async () => axios.post(`${createApiUrl()}/api`, {"devicetype":"hue-sc-app#marcos_macbook_pro"})
-export const getLights = async () => axios.get(`${createApiUrlWithUsername()}/lights`)
+export const fetchBridgeSettings = async () => axios.get(HUE_DISCOVER_URL, { timeout: 10000 })
+export const createUsername = async () => axios.post(`${createApiUrl()}/api`, { devicetype: "hue-sc-app#browser" }, { timeout: 10000 })
+export const getLights = async () => axios.get(`${createApiUrlWithUsername()}/lights`, { timeout: 10000 })
 export const setLightState = async (lightId, state) => axios.put(`${createApiUrlWithUsername()}/lights/${lightId}/state`, state)
+export const getBridgeConfig = async () => axios.get(`${createApiUrlWithUsername()}/config`, { timeout: 8000 })
+export const inspectBridge = async () => axios.get(`${createApiUrl()}/api/config`, { timeout: 8000 })

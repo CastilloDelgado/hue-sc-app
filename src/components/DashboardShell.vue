@@ -17,12 +17,18 @@ const links = [
 ]
 watch(() => route.path, () => { menuOpen.value = false })
 
-onBeforeMount(() => {
+onMounted(async () => {
   const saved = storage.read('savedSequences', [])
   sequences.sequences = Array.isArray(saved) ? saved : []
-  const settings = storage.read('bridgeSettings', {})
-  bridge.setIdAndIp(settings.id || '', settings.ip || '')
-  bridge.setUsername(settings.username || '')
+  try {
+    const result = await $fetch('/api/devices')
+    bridge.devices = result.devices
+    const settings = result.devices[0] || storage.read('bridgeSettings', {})
+    bridge.setIdAndIp(settings.bridgeId || settings.id || '', settings.ip || '')
+    bridge.setUsername(settings.username || '')
+  } catch {
+    error.value = 'No pudimos cargar tus bridges. Recarga la página para intentar de nuevo.'
+  } finally { bridge.devicesLoaded = true }
 })
 
 async function logout() {
